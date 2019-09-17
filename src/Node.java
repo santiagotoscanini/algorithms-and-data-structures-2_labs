@@ -7,6 +7,8 @@ public class Node<T> {
 
 	Node(T d) {
 		this.data = d;
+		this.pre=null;
+		this.next=null;
 	}
 
 	Node(Node<T> p, T d, Node<T> n) {

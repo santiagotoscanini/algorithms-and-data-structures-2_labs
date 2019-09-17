@@ -13,7 +13,7 @@ public class AVL<T extends Comparable<T>> implements BinarySearchTree<T>{
         if(node==null){
             node= new Node<T>(null,elem,null,0);
             this.h_variant=true;
-        }else if(node.data.compareTo(elem) > 1){
+        }else if(node.data.compareTo(elem) >= 1){
             node.pre = insertRecursive(node.pre,elem);
             if(this.h_variant){
                 switch (node.balance){
@@ -45,7 +45,7 @@ public class AVL<T extends Comparable<T>> implements BinarySearchTree<T>{
                         this.h_variant = false;
                 }
             }
-        }else if(node.data.compareTo(elem) < -1){
+        }else if(node.data.compareTo(elem) <= -1){
             node.next = insertRecursive(node.next,elem);
             if(this.h_variant){
                 switch (node.balance){
@@ -60,17 +60,17 @@ public class AVL<T extends Comparable<T>> implements BinarySearchTree<T>{
                         n1=node.next;
                         if(n1.balance == 1){
                             node.next=n1.pre;
-                            n1.next=node;
+                            n1.pre=node;
                             node.balance=0;
                             node=n1;
                         }else {
                             n2=n1.pre;
-                            n1.next=n2.pre;
+                            n1.pre=n2.next;
                             n2.next=n1;
                             node.next=n2.pre;
                             n2.pre=node;
                             node.balance=n2.balance==1?-1:0;
-                            n1.balance=n2.balance==-1?-1:0;
+                            n1.balance=n2.balance==-1?1:0;
                             node=n2;
                         }
                         node.balance=0;
@@ -100,7 +100,11 @@ public class AVL<T extends Comparable<T>> implements BinarySearchTree<T>{
 
     private String printASCrec(Node<T> n){
        if(n!=null) {
-               return ""+printASCrec(n.pre) + n.data.toString() + printASCrec(n.next);
+            String str="";
+            str+=printASCrec(n.pre);
+            str+=n.data+"\n";
+            str+=printASCrec(n.next);
+            return str;
        }else{
            return "";
        }
