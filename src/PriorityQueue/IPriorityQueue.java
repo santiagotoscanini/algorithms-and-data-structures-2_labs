@@ -6,4 +6,6 @@ public interface IPriorityQueue<T> {
     public abstract boolean removeMin();
 
     public abstract void insert(T t, Integer priority);
+
+    public abstract boolean isEmpty();
 }

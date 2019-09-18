@@ -17,11 +17,14 @@ public class BinaryHeapExtended<T> implements IPriorityQueueExtended<T> {
 
     // Constructor
     @SuppressWarnings("unchecked")
-    public BinaryHeapExtended(Integer size, Function<Pair<T, Integer>, Integer> f) {
+    public BinaryHeapExtended(Integer size, Function<T, Integer> f) {
         this.table = (Pair<T, Integer>[]) Array.newInstance(Pair.class, size + 1);
         this.limit = 0;
         this.priority = 0;
-        this.IHashTable = new ClosedHash<Pair<T, Integer>>(size, f, true);
+        Function<Pair<T,Integer>,Integer> function = (Pair<T,Integer> p) ->{
+            return f.apply(p.getV1());
+        };
+        this.IHashTable = new ClosedHash<Pair<T, Integer>>(size, function, true);
     }
 
     // Operations
@@ -114,6 +117,11 @@ public class BinaryHeapExtended<T> implements IPriorityQueueExtended<T> {
         this.table[this.limit] = newData;
         this.IHashTable.addElement(new Pair<T, Integer>(t, this.limit));
         this.mFloat(limit);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.limit==0;
     }
 
     @Override

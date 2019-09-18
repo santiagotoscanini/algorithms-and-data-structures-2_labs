@@ -103,6 +103,11 @@ public class BinaryHeap<T> implements IPriorityQueue<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return this.limit==0;
+    }
+
+    @Override
     public String toString() {
         String str = "";
         for (int i = 1; i <= this.limit; i++) {
