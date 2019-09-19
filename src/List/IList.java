@@ -11,9 +11,17 @@ public interface IList<T> {
 
     public abstract T get(T t);
 
+    public abstract T getFirst();
+
+    public abstract T getLast();
+
+    public abstract boolean deleteFirst();
+
+    public abstract boolean deleteLast();
+
     public abstract boolean contains(T t);
 
-    public abstract void delete(T t);
+    public abstract boolean delete(T t);
 
     public abstract int size();
 }

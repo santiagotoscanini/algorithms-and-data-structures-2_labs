@@ -1,4 +1,4 @@
-package BinaryHeap;
+package PriorityQueue;
 
 public interface IPriorityQueue<T> {
     public abstract T getMin();

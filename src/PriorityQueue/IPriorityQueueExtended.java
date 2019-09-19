@@ -1,4 +1,4 @@
-package BinaryHeap;
+package PriorityQueue;
 
 public interface IPriorityQueueExtended<T> extends IPriorityQueue<T> {
     public abstract boolean changePriority(T elem, Integer newPriority);

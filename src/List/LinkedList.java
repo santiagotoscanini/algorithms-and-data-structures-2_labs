@@ -85,7 +85,58 @@ public class LinkedList<T> implements IList<T> {
     }
 
     @Override
-    public void delete(T t) {
+    public T getFirst() {
+        if(this.fst==null){
+            return null;
+        }else {
+            return this.fst.data;
+        }
+    }
+
+    @Override
+    public T getLast() {
+        if(this.lst==null){
+            return null;
+        }else {
+            return this.lst.data;
+        }
+    }
+
+    @Override
+    public boolean deleteFirst() {
+        if(this.fst!=null){
+            if(this.fst.next!=null){
+                this.fst=this.fst.next;
+                this.fst.pre=null;
+            }else{
+                this.fst=this.lst=null;
+            }
+
+            this.size--;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteLast() {
+        if(this.fst!=null){
+            if(this.lst.pre!=null){
+                this.lst=this.fst.pre;
+                this.lst.next=null;
+            }else{
+                this.lst=this.fst=null;
+            }
+
+            this.size--;
+            return true;
+        }else{
+            return false;
+        }
+    }
+    @Override
+    public boolean delete(T t) {
         if (this.contains(t)) {
             Node<T> nodeToDelete = this.fst;
             while (!nodeToDelete.data.equals(t)) {
@@ -103,6 +154,9 @@ public class LinkedList<T> implements IList<T> {
                 nodeToDelete.next.pre = nodeToDelete.pre;
             }
             this.size--;
+            return true;
+        }else{
+            return false;
         }
     }
 

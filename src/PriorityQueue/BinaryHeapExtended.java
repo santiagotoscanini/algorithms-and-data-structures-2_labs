@@ -1,4 +1,4 @@
-package BinaryHeap;
+package PriorityQueue;
 
 import Auxiliars.Pair;
 import Hash.ClosedHash;
@@ -95,6 +95,7 @@ public class BinaryHeapExtended<T> implements IPriorityQueueExtended<T> {
         if (this.limit != 0) {
             this.IHashTable.deleteElement(new Pair<T, Integer>(this.table[1].getV1(), 1));
             this.table[1] = this.table[this.limit];
+            this.table[this.limit]=null;
             this.limit--;
             this.sink(1);
             return true;
@@ -151,9 +152,10 @@ public class BinaryHeapExtended<T> implements IPriorityQueueExtended<T> {
     public boolean delete(T elem) {
         if (this.IHashTable.contains(new Pair<T, Integer>(elem, -1))) {
             int elemPos = this.IHashTable.get(new Pair<T, Integer>(elem, 2)).getV2();
-            this.limit--;
             this.IHashTable.deleteElement(new Pair<T, Integer>(this.table[elemPos].getV1(), elemPos));
             this.table[elemPos] = this.table[this.limit];
+            this.table[this.limit]=null;
+            this.limit--;
             this.sink(elemPos);
             return true;
         }

@@ -1,4 +1,4 @@
-package BinaryHeap;
+package PriorityQueue;
 
 import Auxiliars.Pair;
 
@@ -29,13 +29,21 @@ public class BinaryHeap<T> implements IPriorityQueue<T> {
 
     private int leastSon(Integer pos) {
         int firstSon = -1, secondSon = -1;
-        if (this.limit > pos * 2 && this.table[pos * 2] != null) {
+        if (this.limit >= pos * 2 && this.table[pos * 2] != null) {
             firstSon = pos * 2;
         }
-        if (this.limit > pos * 2 + 1 && this.table[pos * 2 + 1] != null) {
-            secondSon = pos * 2;
+        if (this.limit >= pos * 2 + 1 && this.table[pos * 2 + 1] != null) {
+            secondSon = pos * 2 + 1;
         }
-        return Integer.min(firstSon, secondSon);
+        if(firstSon==-1||secondSon==-1){
+            return firstSon==-1?secondSon:firstSon;
+        }else{
+            if(this.table[firstSon].getV2()<this.table[secondSon].getV2()){
+                return firstSon;
+            }else {
+                return secondSon;
+            }
+        }
     }
 
     private int getParent(Integer pos) {
@@ -78,9 +86,10 @@ public class BinaryHeap<T> implements IPriorityQueue<T> {
     @Override
     public boolean removeMin() {
         if (this.limit != 0) {
-            this.limit--;
             this.table[1] = this.table[this.limit];
             this.sink(1);
+            this.table[this.limit]=null;
+            this.limit--;
             return true;
         }
         return false;
