@@ -1,43 +1,58 @@
+import PriorityQueue.BinaryHeap;
+import List.IList;
+import List.LinkedList;
+import PriorityQueue.IPriorityQueue;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.Scanner;
 
 public class Launcher {
-	private static Scanner sc;
+	private static Scanner sc= new Scanner(System.in);
 
-	public static void main(String[] args) {
-//
-//		PriorityQueueExtended<Integer> cola = new BinaryHeapExtended<Integer>(20, (Pair<Integer,Integer> p)-> {
-//			return p.getV1();
-//		});
-//
-//		cola.insert(12, 12);
-//		cola.insert(2, 2);
-//		cola.insert(22, 22);
-//		cola.insert(233, 233);
-//		cola.insert(1, 1);
-//		cola.removeMin();
-//		cola.delete(22);
-//		cola.delete(2222222);
-//		cola.changePriority(2, 4444);
-//		System.out.println(cola);
-		
-//		Hash<Pair<String,Integer>> h = new ClosedHash<Pair<String,Integer>>(20, (Pair<String,Integer> p)->{
-//			Integer hash= 0;
-//			for (int j = 0; j < p.getV1().length(); j++) {
-//				hash += p.getV1().charAt(j)*2;
-//			}
-//			return hash;
-//		},true);
-//		
-//		h.addElement(new Pair<String,Integer>("foss",3));
-//		h.addElement(new Pair<String,Integer>("foss",5));
-//		System.out.println(h);
+    public static void main(String[] args) throws FileNotFoundException {
 
-		AVL<Integer> tree = new AVL<Integer>();
-		tree.insert(23);
-		tree.insert(2);
-		tree.insert(21);
-		tree.insert(4);
-		System.out.println(tree.printASC());
-		System.out.println("holaa");
-	}
+        Exercise3();
+    }
+
+    private static void Exercise3() throws FileNotFoundException {
+//        BufferedReader bf = new BufferedReader(new FileReader(new File("C:\\Users\\Nahuel\\Documents\\Algorithms2Obl\\out\\production\\casos\\ejercicio3\\kmerge10.in.txt")));
+//        sc = new Scanner(bf);
+        int k = sc.nextInt();
+        IPriorityQueue<IList<Integer>> queue = new BinaryHeap<IList<Integer>>(k);
+
+        for (int i=0;i<k;i++){
+            int elem_cant=sc.nextInt();
+            IList<Integer> list = new LinkedList<Integer>();
+            while (elem_cant!=0){
+                elem_cant--;
+                list.addLast(sc.nextInt());
+            }
+            queue.insert(list, list.getFirst());
+        }
+
+        IList<Integer> list = new LinkedList<Integer>();
+
+        while(!queue.isEmpty()){
+            IList<Integer> listInQueue = queue.getMin();
+            list.addLast(listInQueue.getFirst());
+            queue.removeMin();
+            listInQueue.deleteFirst();
+            if(!listInQueue.isEmpty()) {
+                queue.insert(listInQueue, listInQueue.getFirst());
+            }
+        }
+        String result = "";
+        while(!list.isEmpty()){
+            if(list.size()!=1){
+                result+=list.getFirst()+"\n";
+            }else{
+                result+=list.getFirst();
+            }
+            list.deleteFirst();
+        }
+        System.out.println(result);
+    }
 }
