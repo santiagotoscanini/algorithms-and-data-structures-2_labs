@@ -1,25 +1,30 @@
-import PriorityQueue.BinaryHeap;
+import Graph.Graph;
 import List.IList;
 import List.LinkedList;
+import PriorityQueue.BinaryHeap;
 import PriorityQueue.IPriorityQueue;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 
 public class Launcher {
-	private static Scanner sc= new Scanner(System.in);
+	private static Scanner sc;
 
     public static void main(String[] args) throws FileNotFoundException {
-
-        Exercise3();
+        sc = new Scanner(System.in);
+        //Exercise3();
+        Exercise4();
     }
 
-    private static void Exercise3() throws FileNotFoundException {
-//        BufferedReader bf = new BufferedReader(new FileReader(new File("C:\\Users\\Nahuel\\Documents\\Algorithms2Obl\\out\\production\\casos\\ejercicio3\\kmerge10.in.txt")));
-//        sc = new Scanner(bf);
+    private static void Exercise4() {
+        Graph g = new Graph(sc,false);
+        IList<Integer>sort = g.topologicOrder();
+        System.out.println(sort);
+    }
+
+    private static void Exercise3()   {
         int k = sc.nextInt();
         IPriorityQueue<IList<Integer>> queue = new BinaryHeap<IList<Integer>>(k);
 
