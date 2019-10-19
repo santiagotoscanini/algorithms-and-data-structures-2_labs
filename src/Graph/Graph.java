@@ -12,18 +12,18 @@ import java.util.Scanner;
 public class Graph {
     private boolean weighted;
     private IPriorityQueue<Pair<Integer,Integer>>[] adjacencyList;
-    private Integer[] inDegre;
+    private Integer[] inDegree;
 
     public Graph(Scanner sc,boolean weighted){
         int v=sc.nextInt();
         this.weighted = weighted;
         this.adjacencyList = (IPriorityQueue<Pair<Integer,Integer>>[]) Array.newInstance(IPriorityQueue.class,v+1);
-        this.inDegre = new Integer[v+1];
+        this.inDegree = new Integer[v+1];
 
         sc.nextInt();
         for (int i = 1; i<this.adjacencyList.length; i++){
             this.adjacencyList[i] = new BinaryHeap<>(10);
-            this.inDegre[i]=0;
+            this.inDegree[i]=0;
         }
 
         while(sc.hasNextInt()){
@@ -31,17 +31,21 @@ public class Graph {
             int edge=sc.nextInt();
             int weight = this.weighted?sc.nextInt():0;
             this.adjacencyList[vertex].insert(new Pair<>(edge, weight),edge);
-            this.inDegre[edge]++;
+            this.inDegree[edge]++;
         }
+    }
+
+    public void dijkstra(){
+
     }
 
     public IList<Integer> topologicOrder(){
         IList<Integer> nodeList = new LinkedList<Integer>();
         IList<Integer> queue = new LinkedList<Integer>();
-        Integer[] inDegree = this.inDegre.clone();
+        Integer[] inDegree = this.inDegree.clone();
 
-        for (int i = 1; i < this.inDegre.length; i++) {
-            if(this.inDegre[i] == 0){
+        for (int i = 1; i < this.inDegree.length; i++) {
+            if(this.inDegree[i] == 0){
                 queue.addLast(i);
             }
         }

@@ -1,23 +1,40 @@
+import Auxiliars.Pair;
 import Graph.Graph;
 import List.IList;
-import List.LinkedList;
+import List.*;
 import PriorityQueue.BinaryHeap;
 import PriorityQueue.IPriorityQueue;
+import java.lang.reflect.Array;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Scanner;
 
 public class Launcher {
+
 	private static Scanner sc;
 
     public static void main(String[] args) throws FileNotFoundException {
         sc = new Scanner(System.in);
-        //Exercise3();
-        Exercise4();
+        Exercise5();
     }
 
+    private static void Exercise5(){
+        int V = sc.nextInt();
+        int E = sc.nextInt();
+        LinkedList<Pair<Integer,Integer>> arr[] = (LinkedList<Pair<Integer,Integer>>[]) Array.newInstance(LinkedList.class,V+1);
+
+        for(int i =1; i<V+1;i++){
+            int v = sc.nextInt();
+            int w = sc.nextInt();
+            int peso = sc.nextInt();
+            arr[v].addLast(new Pair<>(w, peso));
+        }
+
+        System.out.println("xd");
+
+
+    }
+/*
     private static void Exercise4() {
         Graph g = new Graph(sc,false);
         IList<Integer>sort = g.topologicOrder();
@@ -59,5 +76,9 @@ public class Launcher {
             list.deleteFirst();
         }
         System.out.println(result);
-    }
+
+
+    }*/
+
+
 }
