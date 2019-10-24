@@ -2,7 +2,7 @@ package AVL;
 
 import Auxiliars.Node;
 
-public class AVL<T extends Comparable<T>> implements IBinarySearchTree<T> {
+public class AVL<T extends Comparable<T>>{
 
     private Node<T> firstNode;
     private boolean h_variant;
@@ -88,17 +88,14 @@ public class AVL<T extends Comparable<T>> implements IBinarySearchTree<T> {
         return node;
     }
 
-    @Override
     public void insert(T elem) {
         this.firstNode = this.insertRecursive(this.firstNode, elem);
     }
 
-    @Override
     public boolean delete(T elem) {
         return false;
     }
 
-    @Override
     public T getElem(T elem) {
         return null;
     }
@@ -120,3 +117,5 @@ public class AVL<T extends Comparable<T>> implements IBinarySearchTree<T> {
         return this.printASCrec(this.firstNode);
     }
 }
+
+

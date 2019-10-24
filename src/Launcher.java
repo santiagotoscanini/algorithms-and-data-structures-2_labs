@@ -14,12 +14,15 @@ public class Launcher {
 
 	private static Scanner sc;
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         sc = new Scanner(System.in);
         //Exercise3();
         //Exercise4();
-        //Exercise9();
-
+        Exercise9();
+        Graph g = new Graph(sc,false);
+        IList<Integer> list = g.topologicOrder();
+        System.out.println(list);
+        System.out.println(list.size()>3);
     }
 
     private static void Exercise5(){
@@ -38,7 +41,6 @@ public class Launcher {
 
 
     }
-/*
     private static void Exercise4() {
         Graph g = new Graph(sc,false);
         IList<Integer>sort = g.topologicOrder();
@@ -168,7 +170,7 @@ public class Launcher {
         System.out.println(result);
 
 
-    }*/
+    }
 
 
 }

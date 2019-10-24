@@ -1,3 +1,4 @@
+package EjerciciosCompletos;
 import java.util.*;
 
 public class Ejercicio5 {
@@ -25,12 +26,12 @@ public class Ejercicio5 {
             int peso = sc.nextInt();
             adj.get(v).add(new Node(w,peso));
         }
+
         dij.dijkstra(adj,src);
         for(int i: dij.dist){
             System.out.println(i);
         }
     }
-
 
     //TODO: cambiar los Tads por mi implementacion
     public static class DijkstraShortestPath{
@@ -111,4 +112,5 @@ public class Ejercicio5 {
             return 0;
         }
     }
+
 }
