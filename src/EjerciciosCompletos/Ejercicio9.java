@@ -1,7 +1,7 @@
 package EjerciciosCompletos;
 
 public class Ejercicio9 {
-
+/*
     LinkedList<Pair<Integer,Integer>> list = new LinkedList<>();
     int n = sc.nextInt();
         for (int j = 0; j < n; j++) {
@@ -15,5 +15,5 @@ public class Ejercicio9 {
 
         System.out.println("aloha");
         System.out.println(mergeSort(list));
-
+*/
 }
