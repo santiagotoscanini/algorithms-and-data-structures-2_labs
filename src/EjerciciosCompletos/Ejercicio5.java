@@ -23,7 +23,7 @@ public class Ejercicio5 {
         IList<Node>[] adj = (LinkedList<Node>[]) Array.newInstance(IList.class, V+1);
 
         for (int i = 1; i <= V; i++) {
-            adj[i] = new ArrayList<Node>();
+            //adj[i] = new ArrayList<Node>();
         }
 
         for (int i = 1; i < E + 1; i++) {
@@ -33,7 +33,7 @@ public class Ejercicio5 {
             adj[i].addLast(new Node(w, peso));
         }
 
-        dij.dijkstra(adj, src);
+        //dij.dijkstra(adj, src);
         for (int i : dij.dist) {
             System.out.println(i);
         }

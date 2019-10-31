@@ -18,11 +18,9 @@ public class Launcher {
         sc = new Scanner(System.in);
         //Exercise3();
         //Exercise4();
-        Exercise9();
-        Graph g = new Graph(sc,false);
-        IList<Integer> list = g.topologicOrder();
-        System.out.println(list);
-        System.out.println(list.size()>3);
+        //Exercise9();
+        Exercise10();
+        //System.out.println(combination(sc.nextInt(),sc.nextInt()));
     }
 
     private static void Exercise5(){
@@ -171,6 +169,49 @@ public class Launcher {
 
 
     }
+    Integer[] copyArr(Integer[]arr){
+        Integer[]arrCopy=new Integer[arr.length];
 
+        for (int i = 0; i < arr.length; i++) {
+            arrCopy[i] = arr[i];
+        }
 
+        return arrCopy;
+    }
+
+    static Integer combination(Integer n,Integer k){
+        Integer iterativeN=0;
+        Integer[] arr = new Integer[1];
+        arr[0]=1;
+        for (int i = 1; i <= n; i++) {
+            Integer[]arrAux = new Integer[i+1];
+            arrAux[0]=1;
+            arrAux[i]=1;
+            for (int j = 1; j < i; j++) {
+                arrAux[j]=arr[j-1]+arr[j];
+            }
+            arr= arrAux;
+        }
+        return arr[k];
+    }
+
+    private static void Exercise10(){
+        int edificios = sc.nextInt();
+        int contador = 0;
+        for (int i = 0; i < edificios; i++) {
+            int alcance = sc.nextInt();
+            int pisosDeEdificios = sc.nextInt();
+            IList<Integer> operadores = new LinkedList<>();
+            IList<Integer> cuadrillas = new LinkedList<>();
+            String[] piso = sc.nextLine().split(" ");
+            for (int j = 0; j < pisosDeEdificios; j++) {
+                char c = piso[j].charAt(0);
+                if(c == 'C'){
+                    cuadrillas.addLast(j);
+                }else{
+                    operadores.addLast(j);
+                }
+            }
+        }
+    }
 }
