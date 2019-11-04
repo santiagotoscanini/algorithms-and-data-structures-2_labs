@@ -5,6 +5,7 @@ import List.IList;
 import List.*;
 import PriorityQueue.BinaryHeap;
 import PriorityQueue.IPriorityQueue;
+
 import java.lang.reflect.Array;
 
 import java.io.FileNotFoundException;
@@ -12,23 +13,18 @@ import java.util.Scanner;
 
 public class Launcher {
 
-	private static Scanner sc;
+    private static Scanner sc;
 
     public static void main(String[] args) {
         sc = new Scanner(System.in);
-        //Exercise3();
-        //Exercise4();
-        //Exercise9();
-        Exercise10();
-        //System.out.println(combination(sc.nextInt(),sc.nextInt()));
     }
 
-    private static void Exercise5(){
+    private static void Exercise5() {
         int V = sc.nextInt();
         int E = sc.nextInt();
-        LinkedList<Pair<Integer,Integer>> arr[] = (LinkedList<Pair<Integer,Integer>>[]) Array.newInstance(LinkedList.class,V+1);
+        LinkedList<Pair<Integer, Integer>> arr[] = (LinkedList<Pair<Integer, Integer>>[]) Array.newInstance(LinkedList.class, V + 1);
 
-        for(int i =1; i<V+1;i++){
+        for (int i = 1; i < V + 1; i++) {
             int v = sc.nextInt();
             int w = sc.nextInt();
             int peso = sc.nextInt();
@@ -39,59 +35,60 @@ public class Launcher {
 
 
     }
+
     private static void Exercise4() {
-        Graph g = new Graph(sc,false);
-        IList<Integer>sort = g.topologicOrder();
+        Graph g = new Graph(sc, false);
+        IList<Integer> sort = g.topologicOrder();
         System.out.println(sort);
     }
 
-    public static IList<Pair<Integer,Integer>> mergeSort(IList<Pair<Integer,Integer>> list){
-        if(list.size()>=2){
-            Integer middle=list.size()/2;
-            IList<Pair<Integer,Integer>> l= new LinkedList<>();
-            IList<Pair<Integer,Integer>> r = new LinkedList<>();
+    public static IList<Pair<Integer, Integer>> mergeSort(IList<Pair<Integer, Integer>> list) {
+        if (list.size() >= 2) {
+            Integer middle = list.size() / 2;
+            IList<Pair<Integer, Integer>> l = new LinkedList<>();
+            IList<Pair<Integer, Integer>> r = new LinkedList<>();
 
-            Integer i=0;
-            while(!list.isEmpty()){
-                if(i<middle){
+            Integer i = 0;
+            while (!list.isEmpty()) {
+                if (i < middle) {
                     l.addLast(list.getFirst());
-                }else {
+                } else {
                     r.addLast(list.getFirst());
                 }
                 list.deleteFirst();
                 i++;
             }
 
-            l= mergeSort(l);
+            l = mergeSort(l);
             r = mergeSort(r);
-            return merge(l,r);
-        }else{
+            return merge(l, r);
+        } else {
             return list;
         }
     }
 
-    private static IList<Pair<Integer,Integer>> merge(IList<Pair<Integer,Integer>> l, IList<Pair<Integer,Integer>> r) {
-        IList<Pair<Integer,Integer>> list = new LinkedList<>();
-        Integer h1=0,h2=0,lh=0;
+    private static IList<Pair<Integer, Integer>> merge(IList<Pair<Integer, Integer>> l, IList<Pair<Integer, Integer>> r) {
+        IList<Pair<Integer, Integer>> list = new LinkedList<>();
+        Integer h1 = 0, h2 = 0, lh = 0;
 
-        while(!l.isEmpty() && !r.isEmpty()){
-            Pair<Integer,Integer> p1 = l.getFirst();
-            Pair<Integer,Integer> p2 = r.getFirst();
+        while (!l.isEmpty() && !r.isEmpty()) {
+            Pair<Integer, Integer> p1 = l.getFirst();
+            Pair<Integer, Integer> p2 = r.getFirst();
 
-            if(p1.getV1()<=p2.getV1()){
+            if (p1.getV1() <= p2.getV1()) {
                 h1 = p1.getV2();
-                Integer max = Integer.max(h1,h2);
-                if(max!=lh){
+                Integer max = Integer.max(h1, h2);
+                if (max != lh) {
                     p1.setV2(max);
                     list.addLast(p1);
                 }
                 lh = max;
 
                 l.deleteFirst();
-            }else{
+            } else {
                 h2 = p2.getV2();
-                Integer max = Integer.max(h1,h2);
-                if(max!=lh){
+                Integer max = Integer.max(h1, h2);
+                if (max != lh) {
                     p2.setV2(max);
                     list.addLast(p2);
                 }
@@ -100,14 +97,14 @@ public class Launcher {
             }
         }
 
-        IList<Pair<Integer,Integer>> aux;
-        if(l.isEmpty()){
-            aux=r;
-        }else{
-            aux=l;
+        IList<Pair<Integer, Integer>> aux;
+        if (l.isEmpty()) {
+            aux = r;
+        } else {
+            aux = l;
         }
 
-        while(!aux.isEmpty()){
+        while (!aux.isEmpty()) {
             list.addLast(aux.getFirst());
             aux.deleteFirst();
         }
@@ -116,29 +113,29 @@ public class Launcher {
     }
 
     private static void Exercise9() {
-        IList<Pair<Integer,Integer>>list = new LinkedList<>();
+        IList<Pair<Integer, Integer>> list = new LinkedList<>();
         int n = sc.nextInt();
         for (int j = 0; j < n; j++) {
-            int i=sc.nextInt();
-            int f=sc.nextInt();
-            int h=sc.nextInt();
+            int i = sc.nextInt();
+            int f = sc.nextInt();
+            int h = sc.nextInt();
 
-            list.addLast(new Pair<>(i,h));
-            list.addLast(new Pair<>(f,0));
+            list.addLast(new Pair<>(i, h));
+            list.addLast(new Pair<>(f, 0));
         }
 
         System.out.println("aloha");
         System.out.println(mergeSort(list));
     }
 
-    private static void Exercise3()   {
+    private static void Exercise3() {
         int k = sc.nextInt();
         IPriorityQueue<IList<Integer>> queue = new BinaryHeap<IList<Integer>>(k);
 
-        for (int i=0;i<k;i++){
-            int elem_cant=sc.nextInt();
+        for (int i = 0; i < k; i++) {
+            int elem_cant = sc.nextInt();
             IList<Integer> list = new LinkedList<Integer>();
-            while (elem_cant!=0){
+            while (elem_cant != 0) {
                 elem_cant--;
                 list.addLast(sc.nextInt());
             }
@@ -147,21 +144,21 @@ public class Launcher {
 
         IList<Integer> list = new LinkedList<Integer>();
 
-        while(!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             IList<Integer> listInQueue = queue.getMin();
             list.addLast(listInQueue.getFirst());
             queue.removeMin();
             listInQueue.deleteFirst();
-            if(!listInQueue.isEmpty()) {
+            if (!listInQueue.isEmpty()) {
                 queue.insert(listInQueue, listInQueue.getFirst());
             }
         }
         String result = "";
-        while(!list.isEmpty()){
-            if(list.size()!=1){
-                result+=list.getFirst()+"\n";
-            }else{
-                result+=list.getFirst();
+        while (!list.isEmpty()) {
+            if (list.size() != 1) {
+                result += list.getFirst() + "\n";
+            } else {
+                result += list.getFirst();
             }
             list.deleteFirst();
         }
@@ -169,8 +166,9 @@ public class Launcher {
 
 
     }
-    Integer[] copyArr(Integer[]arr){
-        Integer[]arrCopy=new Integer[arr.length];
+
+    Integer[] copyArr(Integer[] arr) {
+        Integer[] arrCopy = new Integer[arr.length];
 
         for (int i = 0; i < arr.length; i++) {
             arrCopy[i] = arr[i];
@@ -179,39 +177,20 @@ public class Launcher {
         return arrCopy;
     }
 
-    static Integer combination(Integer n,Integer k){
-        Integer iterativeN=0;
+    static Integer combination(Integer n, Integer k) {
+        Integer iterativeN = 0;
         Integer[] arr = new Integer[1];
-        arr[0]=1;
+        arr[0] = 1;
         for (int i = 1; i <= n; i++) {
-            Integer[]arrAux = new Integer[i+1];
-            arrAux[0]=1;
-            arrAux[i]=1;
+            Integer[] arrAux = new Integer[i + 1];
+            arrAux[0] = 1;
+            arrAux[i] = 1;
             for (int j = 1; j < i; j++) {
-                arrAux[j]=arr[j-1]+arr[j];
+                arrAux[j] = arr[j - 1] + arr[j];
             }
-            arr= arrAux;
+            arr = arrAux;
         }
         return arr[k];
     }
 
-    private static void Exercise10(){
-        int edificios = sc.nextInt();
-        int contador = 0;
-        for (int i = 0; i < edificios; i++) {
-            int alcance = sc.nextInt();
-            int pisosDeEdificios = sc.nextInt();
-            IList<Integer> operadores = new LinkedList<>();
-            IList<Integer> cuadrillas = new LinkedList<>();
-            String[] piso = sc.nextLine().split(" ");
-            for (int j = 0; j < pisosDeEdificios; j++) {
-                char c = piso[j].charAt(0);
-                if(c == 'C'){
-                    cuadrillas.addLast(j);
-                }else{
-                    operadores.addLast(j);
-                }
-            }
-        }
-    }
 }

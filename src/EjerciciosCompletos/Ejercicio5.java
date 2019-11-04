@@ -1,11 +1,14 @@
 package EjerciciosCompletos;
 
+import java.lang.reflect.Array;
+import java.util.Scanner;
+
+import PriorityQueue.IPriorityQueue;
+import PriorityQueue.BinaryHeap;
 
 import List.IList;
 import List.LinkedList;
 
-import java.util.*;
-import java.lang.reflect.Array;
 
 public class Ejercicio5 {
 
@@ -20,91 +23,93 @@ public class Ejercicio5 {
         int E = sc.nextInt();
 
         dij = new DijkstraShortestPath(V);
-        IList<Node>[] adj = (LinkedList<Node>[]) Array.newInstance(IList.class, V+1);
+        IList<Node>[] adj = (LinkedList<Node>[]) Array.newInstance(LinkedList.class, V + 1);
 
-        for (int i = 1; i <= V; i++) {
-            //adj[i] = new ArrayList<Node>();
+        for (int i = 0; i < V; i++) {
+            adj[i] = new LinkedList<>();
         }
 
         for (int i = 1; i < E + 1; i++) {
             int v = sc.nextInt();
             int w = sc.nextInt();
             int peso = sc.nextInt();
-            adj[i].addLast(new Node(w, peso));
+            adj[v].addLast(new Node(w, peso));
         }
 
-        //dij.dijkstra(adj, src);
+        dij.dijkstra(adj, src);
         for (int i : dij.dist) {
             System.out.println(i);
         }
     }
 
-    //TODO: cambiar los Tads por mi implementacion
     public static class DijkstraShortestPath {
         private int dist[];
-        private Set<Integer> settled;
-        private PriorityQueue<Node> pq;
+        private boolean[] settled;
+        private IPriorityQueue<Node> pq;
         private int V;
-        List<Node>[] adj;
+        IList<Node>[] adj;
 
         DijkstraShortestPath(int V) {
             this.V = V;
             dist = new int[V];
-            settled = new HashSet<Integer>();
-            pq = new PriorityQueue<Node>(V, new Node());
+            settled = new boolean[V];
+            pq = new BinaryHeap<>(V);
         }
 
-        public void dijkstra(List<Node>[] adj, int src) {
+        public void dijkstra(IList<Node>[] adj, int src) {
             this.adj = adj;
             for (int i = 0; i < V; i++) {
                 dist[i] = Integer.MAX_VALUE;
             }
-            pq.add(new Node(src, 0));
+            pq.insert(new Node(src, 0), 0);
             dist[src] = 0;
-
-            while (settled.size() != V) {
-                int u = pq.remove().node;
-                settled.add(u);
-                e_Neighbours(u);
+            int visitados = 0;
+            while (visitados != V) {
+                int nodeNumber = pq.getMin().getNode();
+                pq.removeMin();
+                if (!settled[nodeNumber]) {
+                    settled[nodeNumber] = true;
+                    visitados++;
+                }
+                e_Neighbours(nodeNumber);
             }
         }
 
         private void e_Neighbours(int u) {
             int edgeDistance = -1;
             int newDistance = -1;
+
             for (int i = 0; i < adj[u].size(); i++) {
                 Node v = adj[u].get(i);
-                if (!settled.contains(v.node)) {
-                    edgeDistance = v.cost;
+
+                if (!settled[v.getNode()]) {
+                    edgeDistance = v.getCost();
                     newDistance = dist[u] + edgeDistance;
-                    if (newDistance < dist[v.node])
-                        dist[v.node] = newDistance;
-                    pq.add(new Node(v.node, dist[v.node]));
+
+                    if (newDistance < dist[v.getNode()])
+                        dist[v.getNode()] = newDistance;
+
+                    pq.insert(new Node(v.getNode(), dist[v.getNode()]), dist[v.getNode()]);
                 }
             }
         }
     }
 
-    public static class Node implements Comparator<Node> {
-        public int node;
-        public int cost;
-
-        public Node() {
-        }
+    public static class Node {
+        private int node;
+        private int cost;
 
         public Node(int node, int cost) {
             this.node = node;
             this.cost = cost;
         }
 
-        @Override
-        public int compare(Node node1, Node node2) {
-            if (node1.cost < node2.cost)
-                return -1;
-            if (node1.cost > node2.cost)
-                return 1;
-            return 0;
+        public int getNode() {
+            return this.node;
+        }
+
+        public int getCost() {
+            return this.cost;
         }
     }
-
 }
