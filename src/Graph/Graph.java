@@ -50,42 +50,6 @@ public class Graph {
             e--;
         }
     }
-    //Dijkstra implementado con cola FIFO
-    public void dijkstra(Integer vertex){
-        for(int i=1;i<distance.length;i++){
-            distance[i] = Integer.MAX_VALUE;
-            known[i] = false;
-            backPath[i]=-1;
-        }
-        IList<Integer>q= new LinkedList<>();
-
-        distance[vertex] = 0;
-        q.addLast(vertex);
-
-        while(!q.isEmpty()) {
-            Integer v = q.getFirst();
-            q.deleteFirst();
-            known[v] = true;
-            IPriorityQueue<Pair<Integer, Integer>> auxList = new BinaryHeap<>(10);
-            while (!adjacencyList[v].isEmpty()) {
-                Pair<Integer, Integer> edge = adjacencyList[v].getMin();
-                adjacencyList[v].removeMin();
-                auxList.insert(edge, edge.getV1());
-                Integer w = edge.getV1();
-
-                if(!known[w]){
-                    Integer cvw = edge.getV2();
-                    if (distance[v] + cvw < distance[w]) { // Update w
-                        distance[w] = distance[v] + cvw;
-                        backPath[w] = v;
-                    }
-                    q.addLast(w);
-                }
-            }
-            adjacencyList[v] = auxList;
-        }
-
-    }
 
     public void printPath( Integer v ) {
 
@@ -151,5 +115,51 @@ public class Graph {
         }
 
         return nodeList;
+    }
+
+    int root(int x,Integer[] roots)
+    {
+        while(roots[x] != x)
+        {
+            roots[x] = roots[roots[x]];
+            x = roots[x];
+        }
+        return x;
+    }
+
+    public Integer Kruskal(){
+        Integer totalCost=0;
+        IPriorityQueue<Pair<Pair<Integer,Integer>,Integer>> edgesOrdered = new BinaryHeap<>(10);
+        Integer[]set = new Integer[this.v+1];
+        for (int i = 1; i < set.length ; i++) {
+            set[i]=i;
+        }
+
+        for (int i = 1; i < adjacencyList.length; i++) {
+            IPriorityQueue<Pair<Integer,Integer>> auxList = new BinaryHeap<>(10);
+            while(!adjacencyList[i].isEmpty()){
+                Pair<Integer,Integer> edge = this.adjacencyList[i].getMin();
+                auxList.insert(edge,edge.getV1());
+                this.adjacencyList[i].removeMin();
+                Pair<Pair<Integer,Integer>,Integer> newPair = new Pair<>(new Pair<>(i,edge.getV1()),edge.getV2());
+                edgesOrdered.insert(newPair,newPair.getV2());
+            }
+            adjacencyList[i]=auxList;
+        }
+
+        while(!edgesOrdered.isEmpty()){
+            Pair<Pair<Integer,Integer>,Integer> edge = edgesOrdered.getMin();
+            edgesOrdered.removeMin();
+            Integer v1 =edge.getV1().getV1();
+            Integer v2 = edge.getV1().getV2();
+            if(root(v1,set) != root(v2,set)){
+                int p = root(v1,set);
+                int q = root(v2,set);
+                set[p] = set[q];
+                totalCost+=edge.getV2();
+            }
+        }
+
+        return totalCost;
     }
 }

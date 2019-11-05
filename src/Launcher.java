@@ -17,6 +17,12 @@ public class Launcher {
 
     public static void main(String[] args) {
         sc = new Scanner(System.in);
+        Exercise6();
+    }
+
+    private static void Exercise6() {
+        Graph g = new Graph(sc,true);
+        System.out.println(g.Kruskal());
     }
 
     private static void Exercise5() {
