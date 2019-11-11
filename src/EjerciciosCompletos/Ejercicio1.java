@@ -14,16 +14,19 @@ public class Ejercicio1 {
 
         System.out.println(avl.printASC());
     }
-     static class Node<T> {
+
+    static class Node<T> {
         T data;
         Node<T> next;
         Node<T> pre;
         int balance;
+        int quantity;
 
         Node(Node<T> p, T d, Node<T> n) {
             this.data = d;
             this.pre = p;
             this.next = n;
+            quantity = 1;
         }
 
         Node(Node<T> p, T d, Node<T> n, int b) {
@@ -31,6 +34,8 @@ public class Ejercicio1 {
             this.pre = p;
             this.next = n;
             this.balance = b;
+            quantity = 1;
+
         }
     }
 
@@ -116,6 +121,7 @@ public class Ejercicio1 {
             } else {
                 this.h_variant = false;
                 node.data = elem;
+                node.quantity += 1;
             }
             return node;
         }
@@ -136,7 +142,13 @@ public class Ejercicio1 {
             if (n != null) {
                 String str = "";
                 str += printASCrec(n.pre);
-                str += n.data + "\n";
+                int quantity = n.quantity;
+
+                while (quantity > 0) {
+                    str += n.data + "\n";
+                    quantity--;
+                }
+
                 str += printASCrec(n.next);
                 return str;
             } else {
