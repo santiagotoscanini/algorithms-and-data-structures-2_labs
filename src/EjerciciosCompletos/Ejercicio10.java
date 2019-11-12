@@ -37,25 +37,19 @@ public class Ejercicio10 {
                     operadores.addLast(j);
                 }
             }
+            while (operadores.size() > 0 && cuadrillas.size() > 0) {
+                int posOperador = operadores.getFirst();
+                int posCuadrilla = cuadrillas.getFirst();
 
-            for (int j = 0; j < Math.max(operadores.size(), cuadrillas.size()); j++) {
-                if (j >= cuadrillas.size()) {
-                    if (Math.abs(cuadrillas.getFirst() - operadores.getFirst()) <= alcanceDelOperador) {
-                        operadores.deleteFirst();
-                        contador++;
-                    }
-                } else if (j >= operadores.size()) {
-                    if (Math.abs(cuadrillas.getFirst() - operadores.getFirst()) <= alcanceDelOperador) {
-                        cuadrillas.deleteFirst();
-                        contador++;
-                    }
+                if (Math.abs(posOperador - posCuadrilla) <= alcanceDelOperador) {
+                    cuadrillas.deleteFirst();
+                    contador++;
                 } else {
-                    if (Math.abs(cuadrillas.getFirst() - operadores.getFirst()) <= alcanceDelOperador) {
-                        contador++;
-                        cuadrillas.deleteFirst();
+                    if (operadores.getFirst() < cuadrillas.getFirst()) {
                         operadores.deleteFirst();
-                    } else if (cuadrillas.getFirst() > operadores.getFirst()) operadores.deleteFirst();
-                    else cuadrillas.deleteFirst();
+                    } else {
+                        cuadrillas.deleteFirst();
+                    }
                 }
             }
             System.out.println(contador);
