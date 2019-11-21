@@ -1,10 +1,5 @@
 package EjerciciosCompletos;
 
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.text.Element;
-import java.awt.font.FontRenderContext;
 import java.util.Scanner;
 
 public class Ejercicio13 {
@@ -46,7 +41,7 @@ public class Ejercicio13 {
         }
     }
 
-    public static void resetearMatriz(@NotNull ElementoMatriz[][] mat) {
+    public static void resetearMatriz(ElementoMatriz[][] mat) {
         for (int i = 0; i < mat.length; i++) {
             for (int j = 0; j < mat[0].length; j++) {
                 mat[i][j].setVisitado(false);
@@ -76,7 +71,6 @@ public class Ejercicio13 {
         mat[Xi][Yi].setVisitado(false);
     }
 
-    @Contract(pure = true)
     static boolean esMejorSolucion(int x, int y, int valorActual) {
         return x == Xf && y == Yf && valorActual < mejorSolucion;
     }
