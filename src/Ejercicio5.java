@@ -1,14 +1,10 @@
-package EjerciciosCompletos;
+import List.IList;
+import List.LinkedList;
+import PriorityQueue.BinaryHeap;
+import PriorityQueue.IPriorityQueue;
 
 import java.lang.reflect.Array;
 import java.util.Scanner;
-
-import PriorityQueue.IPriorityQueue;
-import PriorityQueue.BinaryHeap;
-
-import List.IList;
-import List.LinkedList;
-
 
 public class Ejercicio5 {
 

@@ -1,5 +1,3 @@
-package EjerciciosCompletos;
-
 import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.function.Function;
@@ -19,7 +17,7 @@ public class Ejercicio2 {
             }
 
             return nat%Integer.MAX_VALUE;
-        },false);
+        });
 
         for (int i = 0; i < maxN; i++) {
             hash.addElement(sc.nextLine());
@@ -28,16 +26,18 @@ public class Ejercicio2 {
         sc.nextLine();
 
         for (int i = 0; i < maxM; i++) {
-            System.out.println(hash.contains(sc.nextLine()));
+            String line =sc.nextLine();
+            System.out.println(hash.contains(line)?"1":"0");
+            hash.deleteElement(line);
         }
     }
     enum State {
         FREE, OFF, USED;
     }
-    static class ClosedHash<T> {
+    private static class ClosedHash<T> {
 
         // Attributes
-        private Pair<State, T>[] hashTable;
+        private Pair<State, Pair<T,Integer>>[] hashTable;
         private Function<T, Integer> toNat;
         private Integer size;
         private Integer inUse;
@@ -79,17 +79,17 @@ public class Ejercicio2 {
 
         @SuppressWarnings("unchecked")
         private void expand() {
-            this.size = this.NextPrime(this.size * 2);
+            this.size = this.NextPrime(this.size * 10);
             this.inUse = 0;
-            Pair<State, T>[] auxTable = (Pair<State, T>[]) Array.newInstance(Pair.class, this.hashTable.length);
+            Pair<State, Pair<T,Integer>>[] auxTable = (Pair<State, Pair<T,Integer>>[]) Array.newInstance(Pair.class, this.hashTable.length);
             System.arraycopy(this.hashTable, 0, auxTable, 0, this.hashTable.length);
-            this.hashTable = (Pair<State, T>[]) Array.newInstance(Pair.class, this.size);
+            this.hashTable = (Pair<State, Pair<T,Integer>>[]) Array.newInstance(Pair.class, this.size);
             for (int i = 0; i < hashTable.length; i++) {
-                this.hashTable[i] = new Pair<State, T>(State.FREE, null);
+                this.hashTable[i] = new Pair<State, Pair<T,Integer>>(State.FREE, new Pair<T,Integer>(null,0));
             }
             for (int i = 0; i < auxTable.length; i++) {
                 if (auxTable[i] != null && auxTable[i].getV1() == State.USED) {
-                    this.addElement(auxTable[i].getV2());
+                    this.addElement(auxTable[i].getV2().getV1());
                 }
             }
         }
@@ -99,7 +99,7 @@ public class Ejercicio2 {
             int firstPosDown = -1; // Have not occurred yet
 
             for (int i = 0; !(this.hashTable[pos].getV1() == State.FREE
-                    || (this.hashTable[pos].getV1() == State.USED && this.hashTable[pos].getV2().equals(t))); i++) {
+                    || (this.hashTable[pos].getV1() == State.USED && this.hashTable[pos].getV2().getV1().equals(t))); i++) {
                 if (this.hashTable[pos].getV1() == State.OFF && firstPosDown < 0) {
                     firstPosDown = pos;
                 }
@@ -117,15 +117,14 @@ public class Ejercicio2 {
 
         // PUBLICs
         @SuppressWarnings("unchecked")
-        public ClosedHash(int size, Function<T, Integer> toNat, boolean update) {
+        public ClosedHash(int size, Function<T, Integer> toNat) {
             this.size = size;
             this.inUse = 0;
-            this.hashTable = (Pair<State, T>[]) Array.newInstance(Pair.class, size);
+            this.hashTable = (Pair<State, Pair<T,Integer>>[]) Array.newInstance(Pair.class, size);
             for (int i = 0; i < hashTable.length; i++) {
-                this.hashTable[i] = new Pair<State, T>(State.FREE, null);
+                this.hashTable[i] = new Pair<State, Pair<T,Integer>>(State.FREE, new Pair<T,Integer>(null,0));
             }
             this.toNat = toNat;
-            this.update = update;
         }
 
         public int h1(T t) {
@@ -142,31 +141,36 @@ public class Ejercicio2 {
             }
             int pos = this.search(t);
             if (this.hashTable[pos].getV1() == State.FREE) {
-                this.hashTable[pos].setV2(t);
+                this.hashTable[pos].getV2().setV1(t);
+                this.hashTable[pos].getV2().setV2(1);
                 this.hashTable[pos].setV1(State.USED);
                 this.inUse++;
-            } else if (this.hashTable[pos].getV1() == State.USED && this.update) {
-                this.hashTable[pos].setV2(t);
-                this.hashTable[pos].setV1(State.USED);
+            } else if (this.hashTable[pos].getV1() == State.USED) {
+                this.hashTable[pos].getV2().setV2(this.hashTable[pos].getV2().getV2()+1);
             } else if (this.hashTable[pos].getV1() == State.OFF) {
                 this.hashTable[pos].setV1(State.USED);
-                this.hashTable[pos].setV2(t);
+                this.hashTable[pos].getV2().setV1(t);
+                this.hashTable[pos].getV2().setV2(1);
             }
         }
 
         public void deleteElement(T t) {
             int pos = search(t);
-            if (this.hashTable[pos].getV1() == State.USED && this.hashTable[pos].getV2().equals(t)) {
-                this.hashTable[pos].setV1(State.OFF);
+            if (this.hashTable[pos].getV1() == State.USED && this.hashTable[pos].getV2().getV1().equals(t)) {
+                if(this.hashTable[pos].getV2().getV2()==1){
+                    this.hashTable[pos].setV1(State.OFF);
+                }
+                this.hashTable[pos].getV2().setV2(this.hashTable[pos].getV2().getV2()-1);
+
             }
         }
 
         public boolean contains(T t) {
-            return this.hashTable[this.search(t)].getV1() == State.USED && this.hashTable[this.search(t)].getV2().equals(t);
+            return this.hashTable[this.search(t)].getV1() == State.USED && this.hashTable[this.search(t)].getV2().getV1().equals(t);
         }
 
         public T get(T t) {
-            return this.hashTable[this.search(t)].getV2();
+            return this.hashTable[this.search(t)].getV2().getV1();
         }
 
         @Override
@@ -180,7 +184,7 @@ public class Ejercicio2 {
 
     }
 
-    static class Pair<T1, T2> {
+    private static class Pair<T1, T2> {
 
         // Attributes
         private T1 v1;
@@ -217,7 +221,7 @@ public class Ejercicio2 {
         @SuppressWarnings("unchecked")
         @Override
         public boolean equals(Object obj) {
-            Auxiliars.Pair<T1, T2> p = (Auxiliars.Pair<T1, T2>) obj;
+            Pair<T1, T2> p = (Pair<T1, T2>) obj;
 
             return p.getV1().equals(getV1());
         }

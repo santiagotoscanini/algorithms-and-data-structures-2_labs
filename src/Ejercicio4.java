@@ -1,17 +1,16 @@
-package EjerciciosCompletos;
-
 import java.lang.reflect.Array;
 import java.util.Scanner;
 
-public class Ejercicio8 {
+public class Ejercicio4 {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Graph g = new Graph(sc,false);
-        System.out.println(g.hasCycles()?1:0);
+        LinkedList<Integer> sort = g.topologicOrder();
+        System.out.println(sort);
     }
 
-    static class LinkedList<T> {
+    private static class LinkedList<T> {
 
         // Attributes
         int size;
@@ -168,7 +167,7 @@ public class Ejercicio8 {
             String str = "";
             Node<T> node = this.fst;
             while (node != null) {
-                str += node.data.toString() + "-";
+                str += node.data.toString() + "\n";
                 node = node.next;
             }
             if (str.length() == 1) {
@@ -180,7 +179,7 @@ public class Ejercicio8 {
         }
     }
 
-    static class Node<T> {
+    private static class Node<T> {
         public T data;
         public Node<T> next;
         public Node<T> pre;
@@ -200,18 +199,16 @@ public class Ejercicio8 {
         }
     }
 
-    static class Graph {
+    private static class Graph {
         private boolean weighted;
         private BinaryHeap<Pair<Integer,Integer>>[] adjacencyList;
         private Integer[] inDegree;
         private Integer[] backPath;
-        private Integer v;
-        private Integer e;
 
         public Graph(Scanner sc,boolean weighted){
 
-            v=sc.nextInt();
-            e=sc.nextInt();
+            int v=sc.nextInt();
+            int e = sc.nextInt();
 
             this.weighted = weighted;
             this.adjacencyList = (BinaryHeap<Pair<Integer,Integer>>[]) Array.newInstance(BinaryHeap.class,v+1);
@@ -278,14 +275,9 @@ public class Ejercicio8 {
 
             return nodeList;
         }
-
-        public boolean hasCycles(){
-            LinkedList<Integer> list = topologicOrder();
-            return list.size()!=v;
-        }
     }
 
-    static class Pair<T1, T2> {
+    private static class Pair<T1, T2> {
 
         // Attributes
         private T1 v1;
@@ -329,7 +321,7 @@ public class Ejercicio8 {
 
     }
 
-    static class BinaryHeap<T>{
+    private static class BinaryHeap<T>{
         // Attributes
         private Pair<T, Integer>[] table;
         private Integer limit;

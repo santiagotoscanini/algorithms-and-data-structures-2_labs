@@ -1,5 +1,3 @@
-package EjerciciosCompletos;
-
 import java.util.Scanner;
 
 public class Ejercicio12 {
@@ -43,8 +41,13 @@ public class Ejercicio12 {
                     exist = true;
                 }
             }
-            System.out.println(exist ? "1" : "0");
             p--;
+            if(p==0){
+                System.out.print(exist ? "1" : "0");
+            }else{
+                System.out.println(exist ? "1" : "0");
+            }
+
         }
 
 

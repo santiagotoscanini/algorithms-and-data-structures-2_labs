@@ -1,5 +1,3 @@
-package EjerciciosCompletos;
-
 import java.util.Scanner;
 
 public class Ejercicio13 {
@@ -41,7 +39,7 @@ public class Ejercicio13 {
         }
     }
 
-    public static void resetearMatriz(ElementoMatriz[][] mat) {
+    private static void resetearMatriz(ElementoMatriz[][] mat) {
         for (int i = 0; i < mat.length; i++) {
             for (int j = 0; j < mat[0].length; j++) {
                 mat[i][j].setVisitado(false);
@@ -49,7 +47,7 @@ public class Ejercicio13 {
         }
     }
 
-    public static void laberinto(int Xi, int Yi, ElementoMatriz[][] mat, int costoActual) {
+    private static void laberinto(int Xi, int Yi, ElementoMatriz[][] mat, int costoActual) {
         if (!esValido(Xi, Yi, mat)) {
             return;
         }
@@ -71,11 +69,11 @@ public class Ejercicio13 {
         mat[Xi][Yi].setVisitado(false);
     }
 
-    static boolean esMejorSolucion(int x, int y, int valorActual) {
+    private static boolean esMejorSolucion(int x, int y, int valorActual) {
         return x == Xf && y == Yf && valorActual < mejorSolucion;
     }
 
-    static boolean esValido(int x, int y, ElementoMatriz[][] mat) {
+    private static boolean esValido(int x, int y, ElementoMatriz[][] mat) {
         return x >= 0 &&
                 y >= 0 &&
                 x < mat.length &&
@@ -83,7 +81,7 @@ public class Ejercicio13 {
                 mat[x][y].getValor() != 0;
     }
 
-    public static class ElementoMatriz {
+    private static class ElementoMatriz {
 
         private boolean visitado;
         private int valor;

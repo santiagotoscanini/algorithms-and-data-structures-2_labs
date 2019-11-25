@@ -1,15 +1,13 @@
-package EjerciciosCompletos;
-
 import java.lang.reflect.Array;
 import java.util.Scanner;
 
 public class Ejercicio6 {
     public static void main(String[] args) {
         Graph g = new Graph(new Scanner(System.in),true);
-        System.out.println(g.Kruskal());
+        System.out.print(g.Kruskal());
     }
 
-    static class Graph {
+    private static class Graph {
         private boolean weighted;
         private IPriorityQueue<Pair<Integer,Integer>>[] adjacencyList;
         private Integer[] inDegree;
@@ -96,7 +94,7 @@ public class Ejercicio6 {
         }
     }
 
-    static class BinaryHeap<T> implements IPriorityQueue<T> {
+    private static class BinaryHeap<T> implements IPriorityQueue<T> {
         // Attributes
         private Pair<T, Integer>[] table;
         private Integer limit;
@@ -229,7 +227,7 @@ public class Ejercicio6 {
         public abstract boolean isEmpty();
     }
 
-    static class Pair<T1, T2> {
+    private static class Pair<T1, T2> {
 
         // Attributes
         private T1 v1;

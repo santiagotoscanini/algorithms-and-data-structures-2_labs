@@ -1,5 +1,3 @@
-package EjerciciosCompletos;
-
 import java.util.Scanner;
 
 public class Ejercicio11 {
@@ -15,7 +13,7 @@ public class Ejercicio11 {
         }
     }
 
-    static long combination(int n, int k) {
+    private static long combination(int n, int k) {
         long[] arr = new long[1];
         arr[0] = 1;
         for (int i = 1; i <= n; i++) {

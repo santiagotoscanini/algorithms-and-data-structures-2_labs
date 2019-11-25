@@ -1,5 +1,3 @@
-package EjerciciosCompletos;
-
 import java.util.Scanner;
 
 public class Ejercicio1 {
@@ -15,7 +13,7 @@ public class Ejercicio1 {
         System.out.println(avl.printASC());
     }
 
-    static class Node<T> {
+    private static class Node<T> {
         T data;
         Node<T> next;
         Node<T> pre;
@@ -39,7 +37,7 @@ public class Ejercicio1 {
         }
     }
 
-    static class AVL<T extends Comparable<T>> {
+    private static class AVL<T extends Comparable<T>> {
 
         private Node<T> firstNode;
         private boolean h_variant;
