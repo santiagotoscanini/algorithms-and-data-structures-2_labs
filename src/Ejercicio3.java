@@ -42,7 +42,33 @@ public class Ejercicio3 {
 
     }
 
-    private static class LinkedList<T>{
+    private interface IList<T> {
+        public abstract boolean isEmpty();
+
+        public abstract void addFirst(T t);
+
+        public abstract void addLast(T t);
+
+        public abstract T get(int pos);
+
+        public abstract T get(T t);
+
+        public abstract T getFirst();
+
+        public abstract T getLast();
+
+        public abstract boolean deleteFirst();
+
+        public abstract boolean deleteLast();
+
+        public abstract boolean contains(T t);
+
+        public abstract boolean delete(T t);
+
+        public abstract int size();
+    }
+
+    private static class LinkedList<T> implements IList<T>{
 
         // Attributes
         int size;
@@ -151,9 +177,9 @@ public class Ejercicio3 {
         }
 
         public boolean deleteLast() {
-            if(this.fst!=null){
+            if(this.lst!=null){
                 if(this.lst.pre!=null){
-                    this.lst=this.fst.pre;
+                    this.lst=this.lst.pre;
                     this.lst.next=null;
                 }else{
                     this.lst=this.fst=null;
@@ -174,11 +200,9 @@ public class Ejercicio3 {
                 }
 
                 if (nodeToDelete.pre == null) {
-                    this.fst = this.fst.next;
-                    this.fst.pre = null;
+                    this.deleteFirst();
                 } else if (nodeToDelete.next == null) {
-                    this.lst = this.lst.pre;
-                    this.lst.next = null;
+                    this.deleteLast();
                 } else {
                     nodeToDelete.pre.next = nodeToDelete.next;
                     nodeToDelete.next.pre = nodeToDelete.pre;

@@ -5,7 +5,7 @@ public class Ejercicio9 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        LinkedList<Pair<Integer,Integer>> list = new LinkedList<>();
+        IList<Pair<Integer,Integer>> list = new LinkedList<>();
         int n = sc.nextInt();
         for (int j = 0; j < n; j++) {
             int i=sc.nextInt();
@@ -157,7 +157,7 @@ public class Ejercicio9 {
         }
     }
 
-    private static interface IList<T> {
+    public interface IList<T> {
         public abstract boolean isEmpty();
 
         public abstract void addFirst(T t);
@@ -183,7 +183,7 @@ public class Ejercicio9 {
         public abstract int size();
     }
 
-    private static class LinkedList<T> implements IList<T> {
+    private static class LinkedList<T> implements IList<T>{
 
         // Attributes
         int size;
@@ -198,12 +198,10 @@ public class Ejercicio9 {
 
         // Methods
 
-        @Override
         public boolean isEmpty() {
             return size == 0;
         }
 
-        @Override
         public void addFirst(T t) {
             Node<T> newNode;
             if (size == 0) {
@@ -217,7 +215,6 @@ public class Ejercicio9 {
             this.size++;
         }
 
-        @Override
         public void addLast(T t) {
             Node<T> newNode;
             if (size == 0) {
@@ -231,7 +228,6 @@ public class Ejercicio9 {
             this.size++;
         }
 
-        @Override
         public T get(int pos) {
             Node<T> aux = this.fst;
             while (pos != 0) {
@@ -241,7 +237,6 @@ public class Ejercicio9 {
             return aux.data;
         }
 
-        @Override
         public boolean contains(T element) {
             Node<T> iterNode = this.fst;
             while (iterNode != null) {
@@ -253,7 +248,6 @@ public class Ejercicio9 {
             return false;
         }
 
-        @Override
         public T get(T t) {
             Node<T> iterNode = this.fst;
             while (iterNode != null) {
@@ -265,7 +259,6 @@ public class Ejercicio9 {
             return null;
         }
 
-        @Override
         public T getFirst() {
             if(this.fst==null){
                 return null;
@@ -274,7 +267,6 @@ public class Ejercicio9 {
             }
         }
 
-        @Override
         public T getLast() {
             if(this.lst==null){
                 return null;
@@ -283,7 +275,6 @@ public class Ejercicio9 {
             }
         }
 
-        @Override
         public boolean deleteFirst() {
             if(this.fst!=null){
                 if(this.fst.next!=null){
@@ -300,11 +291,10 @@ public class Ejercicio9 {
             }
         }
 
-        @Override
         public boolean deleteLast() {
-            if(this.fst!=null){
+            if(this.lst!=null){
                 if(this.lst.pre!=null){
-                    this.lst=this.fst.pre;
+                    this.lst=this.lst.pre;
                     this.lst.next=null;
                 }else{
                     this.lst=this.fst=null;
@@ -316,7 +306,7 @@ public class Ejercicio9 {
                 return false;
             }
         }
-        @Override
+
         public boolean delete(T t) {
             if (this.contains(t)) {
                 Node<T> nodeToDelete = this.fst;
@@ -325,11 +315,9 @@ public class Ejercicio9 {
                 }
 
                 if (nodeToDelete.pre == null) {
-                    this.fst = this.fst.next;
-                    this.fst.pre = null;
+                    this.deleteFirst();
                 } else if (nodeToDelete.next == null) {
-                    this.lst = this.lst.pre;
-                    this.lst.next = null;
+                    this.deleteLast();
                 } else {
                     nodeToDelete.pre.next = nodeToDelete.next;
                     nodeToDelete.next.pre = nodeToDelete.pre;
@@ -341,7 +329,6 @@ public class Ejercicio9 {
             }
         }
 
-        @Override
         public int size() {
             return this.size;
         }

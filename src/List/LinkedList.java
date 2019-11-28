@@ -2,7 +2,7 @@ package List;
 
 import Auxiliars.Node;
 
-public class LinkedList<T> implements IList<T> {
+public class LinkedList<T> implements IList<T>{
 
     // Attributes
     int size;
@@ -17,12 +17,10 @@ public class LinkedList<T> implements IList<T> {
 
     // Methods
 
-    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
-    @Override
     public void addFirst(T t) {
         Node<T> newNode;
         if (size == 0) {
@@ -36,7 +34,6 @@ public class LinkedList<T> implements IList<T> {
         this.size++;
     }
 
-    @Override
     public void addLast(T t) {
         Node<T> newNode;
         if (size == 0) {
@@ -50,7 +47,6 @@ public class LinkedList<T> implements IList<T> {
         this.size++;
     }
 
-    @Override
     public T get(int pos) {
         Node<T> aux = this.fst;
         while (pos != 0) {
@@ -60,7 +56,6 @@ public class LinkedList<T> implements IList<T> {
         return aux.data;
     }
 
-    @Override
     public boolean contains(T element) {
         Node<T> iterNode = this.fst;
         while (iterNode != null) {
@@ -72,7 +67,6 @@ public class LinkedList<T> implements IList<T> {
         return false;
     }
 
-    @Override
     public T get(T t) {
         Node<T> iterNode = this.fst;
         while (iterNode != null) {
@@ -84,7 +78,6 @@ public class LinkedList<T> implements IList<T> {
         return null;
     }
 
-    @Override
     public T getFirst() {
         if(this.fst==null){
             return null;
@@ -93,7 +86,6 @@ public class LinkedList<T> implements IList<T> {
         }
     }
 
-    @Override
     public T getLast() {
         if(this.lst==null){
             return null;
@@ -102,7 +94,6 @@ public class LinkedList<T> implements IList<T> {
         }
     }
 
-    @Override
     public boolean deleteFirst() {
         if(this.fst!=null){
             if(this.fst.next!=null){
@@ -119,11 +110,10 @@ public class LinkedList<T> implements IList<T> {
         }
     }
 
-    @Override
     public boolean deleteLast() {
-        if(this.fst!=null){
+        if(this.lst!=null){
             if(this.lst.pre!=null){
-                this.lst=this.fst.pre;
+                this.lst=this.lst.pre;
                 this.lst.next=null;
             }else{
                 this.lst=this.fst=null;
@@ -135,7 +125,7 @@ public class LinkedList<T> implements IList<T> {
             return false;
         }
     }
-    @Override
+
     public boolean delete(T t) {
         if (this.contains(t)) {
             Node<T> nodeToDelete = this.fst;
@@ -144,11 +134,9 @@ public class LinkedList<T> implements IList<T> {
             }
 
             if (nodeToDelete.pre == null) {
-                this.fst = this.fst.next;
-                this.fst.pre = null;
+                this.deleteFirst();
             } else if (nodeToDelete.next == null) {
-                this.lst = this.lst.pre;
-                this.lst.next = null;
+                this.deleteLast();
             } else {
                 nodeToDelete.pre.next = nodeToDelete.next;
                 nodeToDelete.next.pre = nodeToDelete.pre;
@@ -160,7 +148,6 @@ public class LinkedList<T> implements IList<T> {
         }
     }
 
-    @Override
     public int size() {
         return this.size;
     }
@@ -181,3 +168,4 @@ public class LinkedList<T> implements IList<T> {
         return str;
     }
 }
+

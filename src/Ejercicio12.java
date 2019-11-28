@@ -21,6 +21,7 @@ public class Ejercicio12 {
                 matrix[i][j] = 0;
             }
         }
+
         for (int i = 1; i <= k; i++) {
             for (int j = 0; j <= m; j++) {
                 if (values[i] > j) {

@@ -6,11 +6,36 @@ public class Ejercicio4 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Graph g = new Graph(sc,false);
-        LinkedList<Integer> sort = g.topologicOrder();
+        IList<Integer> sort = g.topologicOrder();
         System.out.println(sort);
     }
+    private interface IList<T> {
+        public abstract boolean isEmpty();
 
-    private static class LinkedList<T> {
+        public abstract void addFirst(T t);
+
+        public abstract void addLast(T t);
+
+        public abstract T get(int pos);
+
+        public abstract T get(T t);
+
+        public abstract T getFirst();
+
+        public abstract T getLast();
+
+        public abstract boolean deleteFirst();
+
+        public abstract boolean deleteLast();
+
+        public abstract boolean contains(T t);
+
+        public abstract boolean delete(T t);
+
+        public abstract int size();
+    }
+
+    private static class LinkedList<T> implements IList<T>{
 
         // Attributes
         int size;
@@ -119,9 +144,9 @@ public class Ejercicio4 {
         }
 
         public boolean deleteLast() {
-            if(this.fst!=null){
+            if(this.lst!=null){
                 if(this.lst.pre!=null){
-                    this.lst=this.fst.pre;
+                    this.lst=this.lst.pre;
                     this.lst.next=null;
                 }else{
                     this.lst=this.fst=null;
@@ -142,11 +167,9 @@ public class Ejercicio4 {
                 }
 
                 if (nodeToDelete.pre == null) {
-                    this.fst = this.fst.next;
-                    this.fst.pre = null;
+                    this.deleteFirst();
                 } else if (nodeToDelete.next == null) {
-                    this.lst = this.lst.pre;
-                    this.lst.next = null;
+                    this.deleteLast();
                 } else {
                     nodeToDelete.pre.next = nodeToDelete.next;
                     nodeToDelete.next.pre = nodeToDelete.pre;
@@ -167,7 +190,7 @@ public class Ejercicio4 {
             String str = "";
             Node<T> node = this.fst;
             while (node != null) {
-                str += node.data.toString() + "\n";
+                str += node.data.toString() + "-";
                 node = node.next;
             }
             if (str.length() == 1) {
@@ -240,9 +263,9 @@ public class Ejercicio4 {
             System.out.print(v);
         }
 
-        public LinkedList<Integer> topologicOrder(){
-            LinkedList<Integer> nodeList = new LinkedList<Integer>();
-            LinkedList<Integer> queue = new LinkedList<Integer>();
+        public IList<Integer> topologicOrder(){
+            IList<Integer> nodeList = new LinkedList<Integer>();
+            IList<Integer> queue = new LinkedList<Integer>();
             Integer[] inDegree = this.inDegree.clone();
 
             for (int i = 1; i < this.inDegree.length; i++) {

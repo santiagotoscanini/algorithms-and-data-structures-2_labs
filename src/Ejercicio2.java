@@ -9,11 +9,11 @@ public class Ejercicio2 {
         int maxN = sc.nextInt();
         sc.nextLine();
 
-        ClosedHash<String> hash = new ClosedHash<>(maxN*2,(String src)->{
+        IHash<String> hash = new OpenHash<String>(maxN*3,(String src)->{
             int nat = 0;
 
             for (int i = 0; i < src.length(); i++) {
-                nat+= (int) Math.round(src.charAt(i)*0.3);
+                nat+= (int) Math.round(src.charAt(i)*0.2);
             }
 
             return nat%Integer.MAX_VALUE;
@@ -28,149 +28,284 @@ public class Ejercicio2 {
         for (int i = 0; i < maxM; i++) {
             String line =sc.nextLine();
             System.out.println(hash.contains(line)?"1":"0");
-            hash.deleteElement(line);
+            //hash.deleteElement(line);
         }
     }
-    enum State {
-        FREE, OFF, USED;
+
+    private static interface IHash<T> {
+        public abstract void addElement(T t);
+
+        public abstract void deleteElement(T t);
+
+        public abstract boolean contains(T t);
+
+        public abstract T get(T t);
+
+        public abstract int h1(T t);
     }
-    private static class ClosedHash<T> {
+
+    public interface IList<T> {
+        public abstract boolean isEmpty();
+
+        public abstract void addFirst(T t);
+
+        public abstract void addLast(T t);
+
+        public abstract T get(int pos);
+
+        public abstract T get(T t);
+
+        public abstract T getFirst();
+
+        public abstract T getLast();
+
+        public abstract boolean deleteFirst();
+
+        public abstract boolean deleteLast();
+
+        public abstract boolean contains(T t);
+
+        public abstract boolean delete(T t);
+
+        public abstract int size();
+    }
+
+    private static class LinkedList<T> implements IList<T>{
 
         // Attributes
-        private Pair<State, Pair<T,Integer>>[] hashTable;
-        private Function<T, Integer> toNat;
-        private Integer size;
-        private Integer inUse;
-        private boolean update;
+        int size;
+        Node<T> fst;
+        Node<T> lst;
+
+        // Constructors
+        public LinkedList() {
+            size = 0;
+            fst = lst = null;
+        }
 
         // Methods
-        // Privates
 
-        private boolean spaceLeft() {
-            return ((double) (this.inUse) / (double) this.size) > 0.6;
+        public boolean isEmpty() {
+            return size == 0;
         }
 
-        private boolean IsPrime(int number) {
-            if (number == 2 || number == 3)
+        public void addFirst(T t) {
+            Node<T> newNode;
+            if (size == 0) {
+                newNode = new Node<T>(null, t, null);
+                this.lst = newNode;
+            } else {
+                newNode = new Node<T>(null, t, this.fst);
+                this.fst.pre = newNode;
+            }
+            this.fst = newNode;
+            this.size++;
+        }
+
+        public void addLast(T t) {
+            Node<T> newNode;
+            if (size == 0) {
+                newNode = new Node<T>(null, t, null);
+                this.fst = newNode;
+            } else {
+                newNode = new Node<T>(this.lst, t, null);
+                this.lst.next = newNode;
+            }
+            this.lst = newNode;
+            this.size++;
+        }
+
+        public T get(int pos) {
+            Node<T> aux = this.fst;
+            while (pos != 0) {
+                aux = aux.next;
+                pos--;
+            }
+            return aux.data;
+        }
+
+        public boolean contains(T element) {
+            Node<T> iterNode = this.fst;
+            while (iterNode != null) {
+                if (iterNode.data.equals(element)) {
+                    return true;
+                }
+                iterNode = iterNode.next;
+            }
+            return false;
+        }
+
+        public T get(T t) {
+            Node<T> iterNode = this.fst;
+            while (iterNode != null) {
+                if (iterNode.data.equals(t)) {
+                    return iterNode.data;
+                }
+                iterNode = iterNode.next;
+            }
+            return null;
+        }
+
+        public T getFirst() {
+            if(this.fst==null){
+                return null;
+            }else {
+                return this.fst.data;
+            }
+        }
+
+        public T getLast() {
+            if(this.lst==null){
+                return null;
+            }else {
+                return this.lst.data;
+            }
+        }
+
+        public boolean deleteFirst() {
+            if(this.fst!=null){
+                if(this.fst.next!=null){
+                    this.fst=this.fst.next;
+                    this.fst.pre=null;
+                }else{
+                    this.fst=this.lst=null;
+                }
+
+                this.size--;
                 return true;
-
-            if (number % 2 == 0 || number % 3 == 0)
+            }else{
                 return false;
-
-            int divisor = 6;
-            while (divisor * divisor - 2 * divisor + 1 <= number) {
-                if (number % (divisor - 1) == 0)
-                    return false;
-
-                if (number % (divisor + 1) == 0)
-                    return false;
-
-                divisor += 6;
-
             }
-            return true;
         }
 
-        private int NextPrime(int a) {
-            while (!IsPrime(++a)) {
+        public boolean deleteLast() {
+            if(this.lst!=null){
+                if(this.lst.pre!=null){
+                    this.lst=this.lst.pre;
+                    this.lst.next=null;
+                }else{
+                    this.lst=this.fst=null;
+                }
+
+                this.size--;
+                return true;
+            }else{
+                return false;
             }
-            return a;
         }
 
+        public boolean delete(T t) {
+            if (this.contains(t)) {
+                Node<T> nodeToDelete = this.fst;
+                while (!nodeToDelete.data.equals(t)) {
+                    nodeToDelete = nodeToDelete.next;
+                }
+
+                if (nodeToDelete.pre == null) {
+                    this.deleteFirst();
+                } else if (nodeToDelete.next == null) {
+                   this.deleteLast();
+                } else {
+                    nodeToDelete.pre.next = nodeToDelete.next;
+                    nodeToDelete.next.pre = nodeToDelete.pre;
+                }
+                this.size--;
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        public int size() {
+            return this.size;
+        }
+
+        @Override
+        public String toString() {
+            String str = "";
+            Node<T> node = this.fst;
+            while (node != null) {
+                str += node.data.toString() + "-";
+                node = node.next;
+            }
+            if (str.length() == 1) {
+                str = "";
+            } else if (str.length() > 0) {
+                str = str.substring(0, str.length() - 1);
+            }
+            return str;
+        }
+    }
+
+    private static class Node<T> {
+        public T data;
+        public Node<T> next;
+        public Node<T> pre;
+        public int balance;
+
+        public Node(Node<T> p, T d, Node<T> n) {
+            this.data = d;
+            this.pre = p;
+            this.next = n;
+        }
+
+        public Node(Node<T> p, T d, Node<T> n, int b) {
+            this.data = d;
+            this.pre = p;
+            this.next = n;
+            this.balance = b;
+        }
+    }
+
+    private static class OpenHash<T> implements IHash<T> {
+        // Attributes
+        private IList<T>[] hashTable;
+        private Function<T, Integer> toNat;
+        private Integer size;
+
+        // Methods
         @SuppressWarnings("unchecked")
-        private void expand() {
-            this.size = this.NextPrime(this.size * 10);
-            this.inUse = 0;
-            Pair<State, Pair<T,Integer>>[] auxTable = (Pair<State, Pair<T,Integer>>[]) Array.newInstance(Pair.class, this.hashTable.length);
-            System.arraycopy(this.hashTable, 0, auxTable, 0, this.hashTable.length);
-            this.hashTable = (Pair<State, Pair<T,Integer>>[]) Array.newInstance(Pair.class, this.size);
-            for (int i = 0; i < hashTable.length; i++) {
-                this.hashTable[i] = new Pair<State, Pair<T,Integer>>(State.FREE, new Pair<T,Integer>(null,0));
-            }
-            for (int i = 0; i < auxTable.length; i++) {
-                if (auxTable[i] != null && auxTable[i].getV1() == State.USED) {
-                    this.addElement(auxTable[i].getV2().getV1());
-                }
-            }
-        }
-
-        private int search(T t) {
-            int pos = h1(t);
-            int firstPosDown = -1; // Have not occurred yet
-
-            for (int i = 0; !(this.hashTable[pos].getV1() == State.FREE
-                    || (this.hashTable[pos].getV1() == State.USED && this.hashTable[pos].getV2().getV1().equals(t))); i++) {
-                if (this.hashTable[pos].getV1() == State.OFF && firstPosDown < 0) {
-                    firstPosDown = pos;
-                }
-                if (pos == h1(t) && i != 0) {
-                    return h1(t);
-                }
-                pos = (pos + h2(t)) % this.size;
-            }
-
-            if (this.hashTable[pos].getV1() == State.FREE && firstPosDown >= 0) {
-                pos = firstPosDown;
-            }
-            return pos;
-        }
-
-        // PUBLICs
-        @SuppressWarnings("unchecked")
-        public ClosedHash(int size, Function<T, Integer> toNat) {
+        public OpenHash(int size, Function<T, Integer> toNat) {
             this.size = size;
-            this.inUse = 0;
-            this.hashTable = (Pair<State, Pair<T,Integer>>[]) Array.newInstance(Pair.class, size);
+            this.hashTable = new LinkedList[size];
             for (int i = 0; i < hashTable.length; i++) {
-                this.hashTable[i] = new Pair<State, Pair<T,Integer>>(State.FREE, new Pair<T,Integer>(null,0));
+                this.hashTable[i] = new LinkedList<T>();
             }
             this.toNat = toNat;
         }
 
-        public int h1(T t) {
-            return toNat.apply(t) % this.size;
+        @Override
+        public int h1(T elem) {
+            return toNat.apply(elem) % this.size;
         }
 
-        public int h2(T t) { // Steps
-            return toNat.apply(t) % (size - 2) + 1;
-        }
-
+        @Override
         public void addElement(T t) {
-            if (this.spaceLeft()) {
-                this.expand();
-            }
-            int pos = this.search(t);
-            if (this.hashTable[pos].getV1() == State.FREE) {
-                this.hashTable[pos].getV2().setV1(t);
-                this.hashTable[pos].getV2().setV2(1);
-                this.hashTable[pos].setV1(State.USED);
-                this.inUse++;
-            } else if (this.hashTable[pos].getV1() == State.USED) {
-                this.hashTable[pos].getV2().setV2(this.hashTable[pos].getV2().getV2()+1);
-            } else if (this.hashTable[pos].getV1() == State.OFF) {
-                this.hashTable[pos].setV1(State.USED);
-                this.hashTable[pos].getV2().setV1(t);
-                this.hashTable[pos].getV2().setV2(1);
-            }
+            int pos = h1(t);
+            assert (pos >= 0);
+            assert (pos < this.size);
+
+            this.hashTable[pos].addLast(t);
         }
 
+        @Override
         public void deleteElement(T t) {
-            int pos = search(t);
-            if (this.hashTable[pos].getV1() == State.USED && this.hashTable[pos].getV2().getV1().equals(t)) {
-                if(this.hashTable[pos].getV2().getV2()==1){
-                    this.hashTable[pos].setV1(State.OFF);
-                }
-                this.hashTable[pos].getV2().setV2(this.hashTable[pos].getV2().getV2()-1);
-
+            if (this.contains(t)) {
+                this.hashTable[h1(t)].delete(t);
             }
         }
 
+        @Override
         public boolean contains(T t) {
-            return this.hashTable[this.search(t)].getV1() == State.USED && this.hashTable[this.search(t)].getV2().getV1().equals(t);
+            return this.hashTable[h1(t)].contains(t);
         }
 
+        @Override
         public T get(T t) {
-            return this.hashTable[this.search(t)].getV2().getV1();
+            if (this.contains(t)) {
+                return this.hashTable[h1(t)].get(t);
+            }
+            return null;
         }
 
         @Override
@@ -181,7 +316,6 @@ public class Ejercicio2 {
             }
             return str;
         }
-
     }
 
     private static class Pair<T1, T2> {
