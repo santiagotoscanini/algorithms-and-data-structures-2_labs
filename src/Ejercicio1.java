@@ -9,8 +9,7 @@ public class Ejercicio1 {
         for (int i = 0; i < maxN; i++) {
             avl.insert(sc.nextInt());
         }
-
-        System.out.println(avl.printASC());
+        System.out.print(avl.printASC());
     }
 
     private static class Node<T> {

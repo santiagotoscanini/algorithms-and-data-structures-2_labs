@@ -7,7 +7,11 @@ public class Ejercicio4 {
         Scanner sc = new Scanner(System.in);
         Graph g = new Graph(sc,false);
         IList<Integer> sort = g.topologicOrder();
-        System.out.println(sort);
+
+        while(!sort.isEmpty()){
+            System.out.println(sort.getFirst());
+            sort.deleteFirst();
+        }
     }
     private interface IList<T> {
         public abstract boolean isEmpty();

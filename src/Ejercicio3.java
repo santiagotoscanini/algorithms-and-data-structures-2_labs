@@ -6,40 +6,20 @@ public class Ejercicio3 {
         Scanner sc = new Scanner(System.in);
 
         int k = sc.nextInt();
-        BinaryHeap<LinkedList<Long>> queue = new BinaryHeap<LinkedList<Long>>(k);
+        BinaryHeap<Integer> queue = new BinaryHeap<Integer>(k);
 
-        for (int i=0;i<k;i++){
-            long elem_cant=sc.nextInt();
-            LinkedList<Long> list = new LinkedList<>();
-            while (elem_cant!=0){
-                elem_cant--;
-                list.addLast(sc.nextLong());
+        for (int i = 0; i < k; i++) {
+            int max = sc.nextInt();
+            for (int j = 0; j < max; j++) {
+                int value = sc.nextInt();
+                queue.insert(value,value);
             }
-            queue.insert(list, list.getFirst());
         }
-
-        LinkedList<Long> list = new LinkedList<>();
 
         while(!queue.isEmpty()){
-            LinkedList<Long> listInQueue = queue.getMin();
-            list.addLast(listInQueue.getFirst());
+            System.out.println(queue.getMin());
             queue.removeMin();
-            listInQueue.deleteFirst();
-            if(!listInQueue.isEmpty()) {
-                queue.insert(listInQueue, listInQueue.getFirst());
-            }
         }
-        String result = "";
-        while(!list.isEmpty()){
-            if(list.size()!=1){
-                result+=list.getFirst()+"\n";
-            }else{
-                result+=list.getFirst();
-            }
-            list.deleteFirst();
-        }
-        System.out.println(result);
-
     }
 
     private interface IList<T> {
@@ -257,13 +237,13 @@ public class Ejercicio3 {
 
     private static class BinaryHeap<T>{
         // Attributes
-        private Pair<T, Long>[] table;
+        private Pair<T, Integer>[] table;
         private Integer limit;
 
         // Constructor
         // unchecked
         public BinaryHeap(Integer size) {
-            this.table = (Pair<T, Long>[]) Array.newInstance(Pair.class, size + 1);
+            this.table = (Pair<T, Integer>[]) Array.newInstance(Pair.class, size + 1);
             this.limit = 0;
         }
 
@@ -319,7 +299,7 @@ public class Ejercicio3 {
         }
 
         private void swap(Integer a, Integer b) {
-            Pair<T, Long> aux = this.table[a];
+            Pair<T, Integer> aux = this.table[a];
             this.table[a] = this.table[b];
             this.table[b] = aux;
         }
@@ -344,16 +324,16 @@ public class Ejercicio3 {
             return false;
         }
 
-        public void insert(T t, Long priority) {
+        public void insert(T t, Integer priority) {
             if (this.isFull()) {
                 @SuppressWarnings("unchecked")
-                Pair<T, Long>[] newTable = (Pair<T, Long>[]) Array.newInstance(Pair.class, this.table.length * 3);
+                Pair<T, Integer>[] newTable = (Pair<T, Integer>[]) Array.newInstance(Pair.class, this.table.length * 3);
                 for (int i = 0; i < this.table.length; i++) {
                     newTable[i] = this.table[i];
                 }
                 this.table = newTable;
             }
-            Pair<T, Long> newData = new Pair<T, Long>(t, priority);
+            Pair<T, Integer> newData = new Pair<T, Integer>(t, priority);
             this.limit++;
             this.table[this.limit] = newData;
             this.mFloat(limit);
